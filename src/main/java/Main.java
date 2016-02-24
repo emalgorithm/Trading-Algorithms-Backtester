@@ -14,8 +14,8 @@ public class Main {
         Equity facebook = new Equity("Facebook", "FB");
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date = LocalDate.parse("2016-02-20", dateFormat);;
-        System.out.println(facebook.getMovingAverage(date, 100));
+        LocalDate date = LocalDate.parse("2016-02-22", dateFormat);;
+        System.out.println(facebook.getMovingAverage(date, 20));
 
     }
 

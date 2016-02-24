@@ -2,13 +2,11 @@ package portfolio;
 
 import quandlAPIUser.DataFetcher;
 import quandlAPIUser.Dataset;
+import util.Util;
 import com.google.common.collect.Lists;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +28,8 @@ public class Equity {
 
         this.fullName = fullName;
         this.ticker = ticker;
-        this.startDate = computeDate(dataset.getStart_date());
-        this.endDate = computeDate(dataset.getEnd_date());
+        this.startDate = Util.computeDate(dataset.getStart_date());
+        this.endDate = Util.computeDate(dataset.getEnd_date());
         this.historicalData = createHistoricalData(dataset);
     }
 
@@ -82,21 +80,6 @@ public class Equity {
     }
 
 
-    private LocalDate computeDate(String dateString) {
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date;
-
-        try {
-            date = LocalDate.parse(dateString, dateFormat);
-        } catch (DateTimeParseException e) {
-            e.printStackTrace();
-            date  = LocalDate.now();
-        }
-
-        return date;
-    }
-
-
     private Map<LocalDate, DailyTradingValues> createHistoricalData(Dataset dataset) {
         List<List<Object>> dataContainer = dataset.getData();
         Map<LocalDate, DailyTradingValues> historicalData = new HashMap<>();
@@ -110,7 +93,7 @@ public class Equity {
                     "Adj. Volume")).longValue();
 
             String dateString = getDailyValue(dataset, dailyData, "Date");
-            LocalDate date = computeDate(dateString);
+            LocalDate date = Util.computeDate(dateString);
 
             DailyTradingValues dailyTradingValues = new DailyTradingValues(adjustedClosingPrice,
                     adjustedOpeningPrice, adjustedHighPrice, adjustedLowPrice, adjustedVolume);
