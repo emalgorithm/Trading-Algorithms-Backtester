@@ -43,7 +43,6 @@ public class Equity {
      * @return a double representing the requested moving average
      */
     public double getMovingAverage(LocalDate lastDate, int numberOfDays) throws NotEnoughDataException {
-        //Todo consider non-trading days
         if (ChronoUnit.DAYS.between(startDate, lastDate) + 1 < numberOfDays) {
             throw new NotEnoughDataException("There aren't as many recorded days as needed " +
                     "to calculate the requested moving average");
@@ -54,6 +53,11 @@ public class Equity {
                     "is older than the last day recorded");
         }
 
+        //Set date to last trading day before that date
+        if (!historicalData.containsKey(lastDate)) {
+            lastDate = getPreviousTradingDate(lastDate);
+        }
+
         double pricesSum = 0.0;
         int i = numberOfDays;
 
@@ -61,9 +65,7 @@ public class Equity {
             double dailyClosingPrice = historicalData.get(lastDate).getAdjustedClosingPrice();
             pricesSum += dailyClosingPrice;
 
-            do {
-                lastDate = lastDate.plusDays(1);
-            } while (!historicalData.containsKey(lastDate));
+            lastDate = getPreviousTradingDate(lastDate);
 
             i--;
         }
@@ -95,19 +97,6 @@ public class Equity {
     }
 
 
-    /**
-     * Get the difference between two dates
-     * @param oldestDate the oldest date
-     * @param newestDate the newest date
-     * @param timeUnit the unit in which you want the difference
-     * @return the difference value, in the provided unit
-     */
-    private long getDatesDifference(LocalDate oldestDate, LocalDate newestDate,
-                                    TemporalUnit timeUnit) {
-        return oldestDate.until(newestDate, timeUnit);
-    }
-
-
     private Map<LocalDate, DailyTradingValues> createHistoricalData(Dataset dataset) {
         List<List<Object>> dataContainer = dataset.getData();
         Map<LocalDate, DailyTradingValues> historicalData = new HashMap<>();
@@ -117,7 +106,8 @@ public class Equity {
             double adjustedOpeningPrice = getDailyValue(dataset, dailyData, "Adj. Open");
             double adjustedHighPrice = getDailyValue(dataset, dailyData, "Adj. High");
             double adjustedLowPrice = getDailyValue(dataset, dailyData, "Adj. Low");
-            long adjustedVolume = ((Double) getDailyValue(dataset, dailyData, "Adj. Volume")).longValue();
+            long adjustedVolume = ((Double) getDailyValue(dataset, dailyData,
+                    "Adj. Volume")).longValue();
 
             String dateString = getDailyValue(dataset, dailyData, "Date");
             LocalDate date = computeDate(dateString);
@@ -136,6 +126,19 @@ public class Equity {
         int valueIndex = dataset.getIndexInColumnNames(valueName);
         T value = (T) dailyData.get(valueIndex);
         return value;
+    }
+
+    private LocalDate getPreviousTradingDate(LocalDate date) throws NotEnoughDataException {
+        do {
+            if (date.compareTo(startDate) < 0) {
+                throw new NotEnoughDataException("There aren't as many recorded days as needed " +
+                        "to calculate the requested moving average");
+            }
+
+            date = date.minusDays(1);
+        } while (!historicalData.containsKey(date));
+
+        return date;
     }
 
 }
