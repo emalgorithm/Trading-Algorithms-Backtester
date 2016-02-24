@@ -1,6 +1,4 @@
-package QuandlAPIUser;
-
-import QuandlAPIUser.Dataset;
+package quandlAPIUser;
 
 /**
  * Created by ema on 23/02/16.

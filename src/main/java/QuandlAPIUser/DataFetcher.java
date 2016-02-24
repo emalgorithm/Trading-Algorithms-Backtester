@@ -1,4 +1,4 @@
-package QuandlAPIUser;
+package quandlAPIUser;
 
 import com.google.gson.Gson;
 
