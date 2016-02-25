@@ -51,10 +51,7 @@ public class Equity {
                     "is older than the last day recorded");
         }
 
-        //Set date to last trading day before that date
-        if (!historicalData.containsKey(lastDate)) {
-            lastDate = getPreviousTradingDate(lastDate);
-        }
+        lastDate = getPreviousOrCurrentTradingDate(lastDate);
 
         double pricesSum = 0.0;
         int i = numberOfDays;
@@ -71,6 +68,64 @@ public class Equity {
         double movingAverage = pricesSum / ((double) numberOfDays);
 
         return movingAverage;
+    }
+
+
+    public LocalDate getPreviousTradingDate(LocalDate date) throws NotEnoughDataException {
+        do {
+            if (date.compareTo(startDate) < 0) {
+                throw new NotEnoughDataException("The requested date is before the first " +
+                        "recorded date");
+            }
+
+            date = date.minusDays(1);
+        } while (!historicalData.containsKey(date));
+
+        return date;
+    }
+
+    public LocalDate getNextTradingDate(LocalDate date) throws NotEnoughDataException {
+        do {
+            if (date.compareTo(endDate) >= 0) {
+                throw new NotEnoughDataException("The requested date is after the last " +
+                        "recorded date");
+            }
+
+            date = date.plusDays(1);
+        } while (!historicalData.containsKey(date));
+
+        return date;
+    }
+
+    public double getClosingPrice(LocalDate date) throws NotEnoughDataException {
+        if (date.compareTo(startDate) < 0) {
+            throw new NotEnoughDataException("The date requested is before the first day recorded");
+        }
+
+        if (date.compareTo(endDate) > 0) {
+            throw new NotEnoughDataException("The date requested is after the last day recorded");
+        }
+
+        date = getPreviousOrCurrentTradingDate(date);
+
+        return historicalData.get(date).getAdjustedClosingPrice();
+    }
+
+    public LocalDate getPreviousOrCurrentTradingDate(LocalDate date) throws NotEnoughDataException {
+        if (!historicalData.containsKey(date)) {
+            date = getPreviousTradingDate(date);
+        }
+
+        return date;
+    }
+
+
+    public LocalDate getNextOrCurrentTradingDate(LocalDate date) throws NotEnoughDataException {
+        if (!historicalData.containsKey(date)) {
+            date = getNextTradingDate(date);
+        }
+
+        return date;
     }
 
 
@@ -109,19 +164,6 @@ public class Equity {
         int valueIndex = dataset.getIndexInColumnNames(valueName);
         T value = (T) dailyData.get(valueIndex);
         return value;
-    }
-
-    private LocalDate getPreviousTradingDate(LocalDate date) throws NotEnoughDataException {
-        do {
-            if (date.compareTo(startDate) < 0) {
-                throw new NotEnoughDataException("There aren't as many recorded days as needed " +
-                        "to calculate the requested moving average");
-            }
-
-            date = date.minusDays(1);
-        } while (!historicalData.containsKey(date));
-
-        return date;
     }
 
 }
