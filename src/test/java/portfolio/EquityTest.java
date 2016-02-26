@@ -177,4 +177,23 @@ public class EquityTest {
 
     }
 
+    @Test
+    public void testIsTradingDate() throws Exception {
+        Equity visa = new Equity("Visa", "V");
+
+        LocalDate date = Util.computeDate("2016-02-23");
+        boolean expectedIsTradingdate = true;
+        boolean actualIsTradingDate = visa.isTradingDate(date);
+        assertEquals(expectedIsTradingdate, actualIsTradingDate);
+
+        date = Util.computeDate("2016-01-10");
+        expectedIsTradingdate = false;
+        actualIsTradingDate = visa.isTradingDate(date);
+        assertEquals(expectedIsTradingdate, actualIsTradingDate);
+
+        date = Util.computeDate("2015-12-19");
+        expectedIsTradingdate = false;
+        actualIsTradingDate = visa.isTradingDate(date);
+        assertEquals(expectedIsTradingdate, actualIsTradingDate);
+    }
 }

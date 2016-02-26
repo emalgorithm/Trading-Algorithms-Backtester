@@ -7,7 +7,12 @@ import java.time.format.DateTimeParseException;
 /**
  * Created by ema on 24/02/16.
  */
-public class Util {
+public final class Util {
+    public static final double DELTA = 1e-9;
+
+
+    private Util() {}
+
 
     public static LocalDate computeDate(String dateString) {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -21,6 +26,19 @@ public class Util {
         }
 
         return date;
+    }
+
+
+    public static int compare(double first, double second) {
+        if (first + DELTA < second) {
+            return -1;
+        }
+
+        if (second + DELTA < first) {
+            return 1;
+        }
+
+        return 0;
     }
 
 }

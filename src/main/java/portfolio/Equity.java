@@ -128,6 +128,10 @@ public class Equity {
         return date;
     }
 
+    public boolean isTradingDate(LocalDate date) {
+        return historicalData.containsKey(date);
+    }
+
 
     @Override
     public String toString() {
