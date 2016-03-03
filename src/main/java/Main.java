@@ -16,7 +16,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws NotEnoughDataException {
         List<Equity> equities = new ArrayList<>();
-        Equity apple = new Equity("Facebook", "AAPL");
+        Equity apple = new Equity("Facebook", "AXP");
         equities.add(apple);
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");

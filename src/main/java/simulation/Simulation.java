@@ -29,10 +29,8 @@ public class Simulation {
     }
 
     public double run() {
-        //TODO fix the method
-        LocalDate date = startDate;
 
-        while (date.compareTo(endDate) <= 0) {
+        while (portfolio.getCurrentDate().compareTo(endDate) <= 0) {
             strategy.run(portfolio);
 
             portfolio.advanceToNextTradingDate();

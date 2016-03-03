@@ -151,4 +151,5 @@ public class Portfolio {
     public double getCurrentMoney() {
         return currentMoney;
     }
+
 }
