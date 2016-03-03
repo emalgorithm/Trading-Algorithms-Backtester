@@ -5,9 +5,7 @@ import portfolio.Portfolio;
 import strategy.Strategy;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by ema on 24/02/16.
@@ -23,7 +21,7 @@ public class Simulation {
 
     public Simulation(List<Equity> positions, Strategy strategy, double initialMoney, LocalDate
             startDate, LocalDate endDate) {
-        this.portfolio = new Portfolio(positions, initialMoney);
+        this.portfolio = new Portfolio(positions, initialMoney, startDate);
         this.strategy = strategy;
         this.initialMoney = initialMoney;
         this.startDate = startDate;
@@ -35,12 +33,12 @@ public class Simulation {
         LocalDate date = startDate;
 
         while (date.compareTo(endDate) <= 0) {
-            strategy.run(portfolio, date);
+            strategy.run(portfolio);
 
-            date = portfolio.getNextTradingDate(date);
+            portfolio.advanceToNextTradingDate();
         }
 
-        return portfolio.getTotalEquity(endDate);
+        return portfolio.getTotalEquity();
     }
 
 }

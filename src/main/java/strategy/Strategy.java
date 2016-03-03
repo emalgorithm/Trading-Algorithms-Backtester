@@ -9,6 +9,6 @@ import java.time.LocalDate;
  */
 public interface Strategy {
 
-    void run(Portfolio portfolio, LocalDate date);
+    void run(Portfolio portfolio);
 
 }
