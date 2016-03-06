@@ -1,5 +1,7 @@
 package portfolio;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import util.Util;
 
@@ -11,55 +13,59 @@ import static org.junit.Assert.*;
  * Created by ema on 24/02/16.
  */
 public class EquityTest {
+    private static Equity facebook;
+    private static Equity visa;
+
+    @BeforeClass
+    public static void oneTimeSetUp() {
+        facebook = new Equity("Facebook", "FB");
+        visa = new Equity("Visa", "V");
+    }
+
+    @AfterClass
+    public static void oneTimeTearDown() {
+        facebook = null;
+        visa = null;
+    }
 
     @Test
     public void testGetMovingAverage() throws Exception, NotEnoughDataException {
-        Equity facebook = new Equity("Facebook", "FB");
-
-        double expectedMovingAverage = 105.087;
+        double expectedMovingAverage = 105.07840999999999;
         int numberOfDays = 20;
-        double delta = expectedMovingAverage / 1000;
         LocalDate date = Util.computeDate("2016-02-23");
         double actualMovingAverage = facebook.getMovingAverage(date, numberOfDays);
-        assertEquals(expectedMovingAverage, actualMovingAverage, delta);
+        assertEquals(expectedMovingAverage, actualMovingAverage, Util.DELTA);
 
-        expectedMovingAverage = 99.266;
+        expectedMovingAverage = 99.251;
         numberOfDays = 20;
-        delta = expectedMovingAverage / 1000;
         date = Util.computeDate("2016-01-29");
         actualMovingAverage = facebook.getMovingAverage(date, numberOfDays);
-        assertEquals(expectedMovingAverage, actualMovingAverage, delta);
+        assertEquals(expectedMovingAverage, actualMovingAverage, Util.DELTA);
 
-        expectedMovingAverage = 102.9418;
+        expectedMovingAverage = 102.93262400000002;
         numberOfDays = 50;
-        delta = expectedMovingAverage / 1000;
         date = Util.computeDate("2016-02-23");
         actualMovingAverage = facebook.getMovingAverage(date, numberOfDays);
-        assertEquals(expectedMovingAverage, actualMovingAverage, delta);
+        assertEquals(expectedMovingAverage, actualMovingAverage, Util.DELTA);
 
-        expectedMovingAverage = 103.1612;
+        expectedMovingAverage = 103.15363799999997;
         numberOfDays = 50;
-        delta = expectedMovingAverage / 1000;
         date = Util.computeDate("2016-02-11");
         actualMovingAverage = facebook.getMovingAverage(date, numberOfDays);
-        assertEquals(expectedMovingAverage, actualMovingAverage, delta);
+        assertEquals(expectedMovingAverage, actualMovingAverage, Util.DELTA);
 
-
-        Equity apple = new Equity("Visa", "V");
 
         expectedMovingAverage = 72.76765822514862;
         numberOfDays = 200;
-        delta = expectedMovingAverage / 1000;
         date = Util.computeDate("2016-02-23");
-        actualMovingAverage = apple.getMovingAverage(date, numberOfDays);
-        assertEquals(expectedMovingAverage, actualMovingAverage, delta);
+        actualMovingAverage = visa.getMovingAverage(date, numberOfDays);
+        assertEquals(expectedMovingAverage, actualMovingAverage, Util.DELTA);
 
         expectedMovingAverage = 63.97488815472064;
         numberOfDays = 200;
-        delta = expectedMovingAverage / 1000;
         date = Util.computeDate("2015-07-12");
-        actualMovingAverage = apple.getMovingAverage(date, numberOfDays);
-        assertEquals(expectedMovingAverage, actualMovingAverage, delta);
+        actualMovingAverage = visa.getMovingAverage(date, numberOfDays);
+        assertEquals(expectedMovingAverage, actualMovingAverage, Util.DELTA);
 
     }
 
@@ -67,18 +73,14 @@ public class EquityTest {
     @Test
     public void testToString() throws Exception {
         String name = "Visa";
-        Equity visa = new Equity(name, "V");
         assertEquals(name, visa.toString());
 
         name = "Facebook";
-        Equity facebook = new Equity(name, "FB");
         assertEquals(name, facebook.toString());
     }
 
     @Test
     public void testGetPreviousTradingDate() throws Exception {
-        Equity visa = new Equity("Visa", "V");
-
         LocalDate date = Util.computeDate("2016-02-23");
         LocalDate expectedPreviousTradingDate = Util.computeDate("2016-02-22");
         LocalDate actualPreviousTradingDate = visa.getPreviousTradingDate(date);
@@ -97,8 +99,6 @@ public class EquityTest {
 
     @Test
     public void testGetNextTradingDate() throws Exception {
-        Equity visa = new Equity("Visa", "V");
-
         LocalDate date = Util.computeDate("2016-02-22");
         LocalDate expectedNextTradingDate = Util.computeDate("2016-02-23");
         LocalDate actualNextTradingDate = visa.getNextTradingDate(date);
@@ -117,8 +117,6 @@ public class EquityTest {
 
     @Test
     public void testGetPreviousOrCurrentTradingDate() throws Exception {
-        Equity visa = new Equity("Visa", "V");
-
         LocalDate date = Util.computeDate("2016-02-23");
         LocalDate expectedPreviousOrCurrentTradingDate = Util.computeDate("2016-02-23");
         LocalDate actualPreviousOrCurrentTradingDate = visa.getPreviousOrCurrentTradingDate(date);
@@ -137,8 +135,6 @@ public class EquityTest {
 
     @Test
     public void testGetNextOrCurrentTradingDate() throws Exception {
-        Equity visa = new Equity("Visa", "V");
-
         LocalDate date = Util.computeDate("2016-02-23");
         LocalDate expectedNextOrCurrentTradingDate = Util.computeDate("2016-02-23");
         LocalDate actualPreviousOrCurrentTradingDate = visa.getNextOrCurrentTradingDate(date);
@@ -157,43 +153,35 @@ public class EquityTest {
 
     @Test
     public void testGetClosingPrice() throws Exception {
-        Equity facebook = new Equity("Facebook", "FB");
-        double delta = 0.000001;
-
         LocalDate date = Util.computeDate("2016-02-22");
         double expectedClosingPrice = 107.16;
         double actualClosingPrice = facebook.getClosingPrice(date);
-        assertEquals(expectedClosingPrice, actualClosingPrice, delta);
+        assertEquals(expectedClosingPrice, actualClosingPrice, Util.DELTA);
 
         date = Util.computeDate("2013-10-16");
         expectedClosingPrice = 51.14;
         actualClosingPrice = facebook.getClosingPrice(date);
-        assertEquals(expectedClosingPrice, actualClosingPrice, delta);
+        assertEquals(expectedClosingPrice, actualClosingPrice, Util.DELTA);
 
         date = Util.computeDate("2012-05-18");
         expectedClosingPrice = 38.23;
         actualClosingPrice = facebook.getClosingPrice(date);
-        assertEquals(expectedClosingPrice, actualClosingPrice, delta);
+        assertEquals(expectedClosingPrice, actualClosingPrice, Util.DELTA);
 
     }
 
     @Test
     public void testIsTradingDate() throws Exception {
-        Equity visa = new Equity("Visa", "V");
-
         LocalDate date = Util.computeDate("2016-02-23");
-        boolean expectedIsTradingdate = true;
         boolean actualIsTradingDate = visa.isTradingDate(date);
-        assertEquals(expectedIsTradingdate, actualIsTradingDate);
+        assertTrue(actualIsTradingDate);
 
         date = Util.computeDate("2016-01-10");
-        expectedIsTradingdate = false;
         actualIsTradingDate = visa.isTradingDate(date);
-        assertEquals(expectedIsTradingdate, actualIsTradingDate);
+        assertFalse(actualIsTradingDate);
 
         date = Util.computeDate("2015-12-19");
-        expectedIsTradingdate = false;
         actualIsTradingDate = visa.isTradingDate(date);
-        assertEquals(expectedIsTradingdate, actualIsTradingDate);
+        assertFalse(actualIsTradingDate);
     }
 }

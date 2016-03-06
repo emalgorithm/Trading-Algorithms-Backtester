@@ -1,6 +1,6 @@
 package portfolio;
 
-import org.junit.Test;
+import org.junit.*;
 import util.Util;
 
 import java.time.LocalDate;
@@ -14,19 +14,35 @@ import static org.junit.Assert.*;
  */
 public class PortfolioTest {
     private Portfolio portfolio;
-    private Equity visa;
-    private Equity facebook;
-    private double initialMoney;
-    LocalDate date;
+    private static Equity visa;
+    private static Equity facebook;
+    private static double initialMoney;
+    private static LocalDate date;
 
-    public PortfolioTest() {
+    @BeforeClass
+    public static void oneTimeSetUp() {
         visa = new Equity("Visa", "V");
         facebook = new Equity("Facebook", "FB");
         date = Util.computeDate("2016-02-23");
         initialMoney = 10000;
+    }
 
+    @AfterClass
+    public static void oneTimeTearDown() {
+        visa = null;
+        facebook = null;
+        date = null;
+    }
+
+    @Before
+    public void setUp() {
         List<Equity> portfolioEquities = Arrays.asList(visa, facebook);
         portfolio = new Portfolio(portfolioEquities, initialMoney, date);
+    }
+
+    @After
+    public void tearDown() {
+        portfolio = null;
     }
 
     @Test
@@ -168,69 +184,44 @@ public class PortfolioTest {
     public void testGetCurrentMoney() throws Exception {
         double expectedCurrentMoney = initialMoney;
         double actualCurrentMoney = portfolio.getCurrentMoney();
-
         assertEquals(expectedCurrentMoney, actualCurrentMoney, Util.DELTA);
     }
 
     @Test
     public void testIsLongPositionOpen() throws Exception {
-        boolean expectedIsLongPositionOpen = false;
         boolean actualIsLongPositionOpen = portfolio.isLongPositionOpen(facebook);
-
-        assertEquals(expectedIsLongPositionOpen, actualIsLongPositionOpen);
-
+        assertFalse(actualIsLongPositionOpen);
 
         double position = 0.000002;
         portfolio.enterLongPosition(facebook, position);
-        expectedIsLongPositionOpen = true;
         actualIsLongPositionOpen = portfolio.isLongPositionOpen(facebook);
-
-        assertEquals(expectedIsLongPositionOpen, actualIsLongPositionOpen);
-
+        assertTrue(actualIsLongPositionOpen);
 
         portfolio.enterShortPosition(facebook, position);
-        expectedIsLongPositionOpen = false;
         actualIsLongPositionOpen = portfolio.isLongPositionOpen(facebook);
-
-        assertEquals(expectedIsLongPositionOpen, actualIsLongPositionOpen);
+        assertFalse(actualIsLongPositionOpen);
 
     }
 
     @Test
     public void testIsShortPositionOpen() throws Exception {
-        boolean expectedIsShortPositionOpen = false;
         boolean actualIsShortPositionOpen = portfolio.isShortPositionOpen(facebook);
-
-        assertEquals(expectedIsShortPositionOpen, actualIsShortPositionOpen);
-
+        assertFalse(actualIsShortPositionOpen);
 
         double position = 0.000002;
         portfolio.enterShortPosition(facebook, position);
-        expectedIsShortPositionOpen = true;
         actualIsShortPositionOpen = portfolio.isShortPositionOpen(facebook);
-
-        assertEquals(expectedIsShortPositionOpen, actualIsShortPositionOpen);
-
+        assertTrue(actualIsShortPositionOpen);
 
         portfolio.enterLongPosition(facebook, position);
-        expectedIsShortPositionOpen = false;
         actualIsShortPositionOpen = portfolio.isShortPositionOpen(facebook);
-
-        assertEquals(expectedIsShortPositionOpen, actualIsShortPositionOpen);
+        assertFalse(actualIsShortPositionOpen);
     }
 
     @Test
     public void testGetCurrentDate() throws Exception {
         LocalDate expectedDate = Util.computeDate("2016-02-23");
         LocalDate actualDate = portfolio.getCurrentDate();
-
-        assertEquals(expectedDate, actualDate);
-
-
-        portfolio.advanceToNextTradingDate();
-        expectedDate = Util.computeDate("2016-02-24");
-        actualDate = portfolio.getCurrentDate();
-
         assertEquals(expectedDate, actualDate);
     }
 
@@ -239,13 +230,10 @@ public class PortfolioTest {
         double expectedPosition = 3;
         portfolio.enterLongPosition(facebook, expectedPosition);
         double actualPosition = portfolio.getCurrentPosition(facebook);
-
         assertEquals(expectedPosition, actualPosition, Util.DELTA);
-
 
         expectedPosition = 0.0;
         actualPosition = portfolio.getCurrentPosition(visa);
-
         assertEquals(expectedPosition, actualPosition, Util.DELTA);
     }
 
@@ -254,32 +242,24 @@ public class PortfolioTest {
         portfolio.advanceToNextTradingDate();
         LocalDate expectedCurrentDate = Util.computeDate("2016-02-24");
         LocalDate actualCurrentDate = portfolio.getCurrentDate();
-
         assertEquals(expectedCurrentDate, actualCurrentDate);
-
 
         portfolio.advanceToNextTradingDate();
         portfolio.advanceToNextTradingDate();
         portfolio.advanceToNextTradingDate();
         expectedCurrentDate = Util.computeDate("2016-02-29");
         actualCurrentDate = portfolio.getCurrentDate();
-
         assertEquals(expectedCurrentDate, actualCurrentDate);
 
     }
 
     @Test
     public void testIsEquityInPortfolio() throws Exception {
-        boolean expectedContainsEquity = true;
         boolean actualContainsEquity = portfolio.containsEquity(facebook);
-
-        assertEquals(expectedContainsEquity, actualContainsEquity);
-
+        assertTrue(actualContainsEquity);
 
         Equity linkedin = new Equity("linkedin", "LNKD");
-        expectedContainsEquity = false;
         actualContainsEquity = portfolio.containsEquity(linkedin);
-
-        assertEquals(expectedContainsEquity, actualContainsEquity);
+        assertFalse(actualContainsEquity);
     }
 }

@@ -1,6 +1,8 @@
 package portfolio;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
+import util.Util;
 
 import static org.junit.Assert.*;
 
@@ -8,74 +10,42 @@ import static org.junit.Assert.*;
  * Created by ema on 24/02/16.
  */
 public class DailyTradingValuesTest {
+    private static DailyTradingValues dailyTradingValues;
+
+    @BeforeClass
+    public static void oneTimeSetUp() {
+        double adjustedClosingPrice = 3414.2124;
+        double adjustedOpeningPrice = 4264.346;
+        double adjustedHighPrice = 574.6542;
+        double adjustedLowPrice = 12.744;
+        long adjustedVolume = 9523643;
+
+        dailyTradingValues = new DailyTradingValues(adjustedClosingPrice, adjustedOpeningPrice,
+                adjustedHighPrice, adjustedLowPrice, adjustedVolume);
+    }
 
     @Test
     public void testGetAdjustedClosingPrice() throws Exception {
-        double delta = 0.0000001;
-
-        double adjustedClosingPrice = 3414.2124;
-        DailyTradingValues dailyTradingValues = new DailyTradingValues(adjustedClosingPrice, 0,
-                0, 0, 0);
-        assertEquals(adjustedClosingPrice, dailyTradingValues.getAdjustedClosingPrice(), delta);
-
-        adjustedClosingPrice = 5368358395.75;
-        dailyTradingValues = new DailyTradingValues(adjustedClosingPrice, 0, 0, 0, 0);
-        assertEquals(adjustedClosingPrice, dailyTradingValues.getAdjustedClosingPrice(), delta);
+        assertEquals(3414.2124, dailyTradingValues.getAdjustedClosingPrice(), Util.DELTA);
     }
 
     @Test
     public void testGetAdjustedOpeningPrice() throws Exception {
-        double delta = 0.0000001;
-
-        double adjustedOpeningPrice = 3414.2124;
-        DailyTradingValues dailyTradingValues = new DailyTradingValues(0, adjustedOpeningPrice,
-                0, 0, 0);
-        assertEquals(adjustedOpeningPrice, dailyTradingValues.getAdjustedOpeningPrice(), delta);
-
-        adjustedOpeningPrice = 5368358395.75;
-        dailyTradingValues = new DailyTradingValues(0, adjustedOpeningPrice, 0, 0, 0);
-        assertEquals(adjustedOpeningPrice, dailyTradingValues.getAdjustedOpeningPrice(), delta);
+        assertEquals(4264.346, dailyTradingValues.getAdjustedOpeningPrice(), Util.DELTA);
     }
 
     @Test
     public void testGetAdjustedHighPrice() throws Exception {
-        double delta = 0.0000001;
-
-        double adjustedHighPrice = 3414.2124;
-        DailyTradingValues dailyTradingValues = new DailyTradingValues(0, 0, adjustedHighPrice,
-                0, 0);
-        assertEquals(adjustedHighPrice, dailyTradingValues.getAdjustedHighPrice(), delta);
-
-        adjustedHighPrice = 5368358395.75;
-        dailyTradingValues = new DailyTradingValues(0, 0, adjustedHighPrice, 0, 0);
-        assertEquals(adjustedHighPrice, dailyTradingValues.getAdjustedHighPrice(), delta);
+        assertEquals(574.6542, dailyTradingValues.getAdjustedHighPrice(), Util.DELTA);
     }
 
     @Test
     public void testGetAdjustedLowPrice() throws Exception {
-        double delta = 0.0000001;
-
-        double adjustedLowPrice = 3414.2124;
-        DailyTradingValues dailyTradingValues = new DailyTradingValues(0, 0, 0,
-                adjustedLowPrice, 0);
-        assertEquals(adjustedLowPrice, dailyTradingValues.getAdjustedLowPrice(), delta);
-
-        adjustedLowPrice = 5368358395.75;
-        dailyTradingValues = new DailyTradingValues(0, 0, 0, adjustedLowPrice, 0);
-        assertEquals(adjustedLowPrice, dailyTradingValues.getAdjustedLowPrice(), delta);
+        assertEquals(12.744, dailyTradingValues.getAdjustedLowPrice(), Util.DELTA);
     }
 
     @Test
     public void testGetAdjustedVolume() throws Exception {
-        double delta = 0.0000001;
-
-        long adjustedVolume = 34142124;
-        DailyTradingValues dailyTradingValues = new DailyTradingValues(0, 0, 0, 0,
-                adjustedVolume);
-        assertEquals(adjustedVolume, dailyTradingValues.getAdjustedVolume(), delta);
-
-        adjustedVolume = 5368358439575L;
-        dailyTradingValues = new DailyTradingValues(0, 0, 0, 0, adjustedVolume);
-        assertEquals(adjustedVolume, dailyTradingValues.getAdjustedVolume(), delta);
+        assertEquals(9523643, dailyTradingValues.getAdjustedVolume(), Util.DELTA);
     }
 }
