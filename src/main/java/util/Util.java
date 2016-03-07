@@ -8,7 +8,7 @@ import java.time.format.DateTimeParseException;
  * Created by ema on 24/02/16.
  */
 public final class Util {
-    public static final double DELTA = 1e-9;
+    public static final Double DELTA = 1e-9;
 
 
     private Util() {}
@@ -29,7 +29,7 @@ public final class Util {
     }
 
 
-    public static int compare(double first, double second) {
+    public static int compare(Double first, Double second) {
         if (first + DELTA < second) {
             return -1;
         }

@@ -11,15 +11,14 @@ import java.util.List;
  * Created by ema on 24/02/16.
  */
 public class Simulation {
-    //portfolio map an equity to the current amount of that equity in our portfolio
     private final Portfolio portfolio;
     private final Strategy strategy;
-    private final double initialMoney;
-    private double gain;
+    private final Double initialMoney;
+    private Double gain;
     private final LocalDate startDate;
     private final LocalDate endDate;
 
-    public Simulation(List<Equity> positions, Strategy strategy, double initialMoney, LocalDate
+    public Simulation(List<Equity> positions, Strategy strategy, Double initialMoney, LocalDate
             startDate, LocalDate endDate) {
         this.portfolio = new Portfolio(positions, initialMoney, startDate);
         this.strategy = strategy;
@@ -28,7 +27,7 @@ public class Simulation {
         this.endDate = endDate;
     }
 
-    public double run() {
+    public Double run() {
 
         while (portfolio.getCurrentDate().compareTo(endDate) <= 0) {
             strategy.run(portfolio);

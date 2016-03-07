@@ -16,7 +16,7 @@ public class PortfolioTest {
     private Portfolio portfolio;
     private static Equity visa;
     private static Equity facebook;
-    private static double initialMoney;
+    private static Double initialMoney;
     private static LocalDate date;
 
     @BeforeClass
@@ -47,14 +47,14 @@ public class PortfolioTest {
 
     @Test
     public void testEnterLongPosition() throws Exception {
-        double currentMoney = initialMoney;
+        Double currentMoney = initialMoney;
 
-        double positionValue = initialMoney * 0.3;                 // 30% of initialMoney
-        double expectedPosition = positionValue / visa.getClosingPrice(date);
+        Double positionValue = initialMoney * 0.3;                 // 30% of initialMoney
+        Double expectedPosition = positionValue / visa.getClosingPrice(date);
         portfolio.enterLongPosition(visa, expectedPosition);
-        double actualPosition = portfolio.getCurrentPosition(visa);
-        double expectedNewCurrentMoney = currentMoney - positionValue;
-        double actualNewCurrentMoney = portfolio.getCurrentMoney();
+        Double actualPosition = portfolio.getCurrentPosition(visa);
+        Double expectedNewCurrentMoney = currentMoney - positionValue;
+        Double actualNewCurrentMoney = portfolio.getCurrentMoney();
         currentMoney = actualNewCurrentMoney;
 
         assertEquals(expectedPosition, actualPosition, Util.DELTA);
@@ -73,8 +73,8 @@ public class PortfolioTest {
         assertEquals(expectedNewCurrentMoney, actualNewCurrentMoney, Util.DELTA);
 
 
-        double additionalPositionValue = initialMoney * 0.1;       // 10% of initial money
-        double newPosition = additionalPositionValue / facebook.getClosingPrice(date);
+        Double additionalPositionValue = initialMoney * 0.1;       // 10% of initial money
+        Double newPosition = additionalPositionValue / facebook.getClosingPrice(date);
         portfolio.enterLongPosition(facebook, newPosition);
         positionValue += additionalPositionValue;
         expectedPosition = positionValue / facebook.getClosingPrice(date);
@@ -89,15 +89,15 @@ public class PortfolioTest {
 
     @Test
     public void testEnterShortPosition() throws Exception {
-        double currentMoney = initialMoney;
+        Double currentMoney = initialMoney;
 
-        double positionValue = initialMoney * 0.3;                 // 30% of initialMoney
-        double position = positionValue / visa.getClosingPrice(date);
-        double expectedPosition = -position;
+        Double positionValue = initialMoney * 0.3;                 // 30% of initialMoney
+        Double position = positionValue / visa.getClosingPrice(date);
+        Double expectedPosition = -position;
         portfolio.enterShortPosition(visa, position);
-        double actualPosition = portfolio.getCurrentPosition(visa);
-        double expectedNewCurrentMoney = currentMoney + positionValue;
-        double actualNewCurrentMoney = portfolio.getCurrentMoney();
+        Double actualPosition = portfolio.getCurrentPosition(visa);
+        Double expectedNewCurrentMoney = currentMoney + positionValue;
+        Double actualNewCurrentMoney = portfolio.getCurrentMoney();
         currentMoney = actualNewCurrentMoney;
 
         assertEquals(expectedPosition, actualPosition, Util.DELTA);
@@ -117,8 +117,8 @@ public class PortfolioTest {
         assertEquals(expectedNewCurrentMoney, actualNewCurrentMoney, Util.DELTA);
 
 
-        double additionalPositionValue = initialMoney * 0.1;       // 10% of initial money
-        double newPosition = additionalPositionValue / facebook.getClosingPrice(date);
+        Double additionalPositionValue = initialMoney * 0.1;       // 10% of initial money
+        Double newPosition = additionalPositionValue / facebook.getClosingPrice(date);
         portfolio.enterShortPosition(facebook, newPosition);
         positionValue += additionalPositionValue;
         expectedPosition = -(positionValue / facebook.getClosingPrice(date));
@@ -134,20 +134,20 @@ public class PortfolioTest {
     @Test
     public void testClosePosition() throws Exception {
 
-        double visaPositionValue = initialMoney * 0.3;                 // 30% of initialMoney
-        double position = visaPositionValue / visa.getClosingPrice(date);
+        Double visaPositionValue = initialMoney * 0.3;                 // 30% of initialMoney
+        Double position = visaPositionValue / visa.getClosingPrice(date);
         portfolio.enterLongPosition(visa, position);
 
-        double facebookPositionValue = initialMoney * 0.4;             // 40% of initial money
+        Double facebookPositionValue = initialMoney * 0.4;             // 40% of initial money
         position = facebookPositionValue / facebook.getClosingPrice(date);
         portfolio.enterShortPosition(facebook, position);
 
-        double currentMoney = portfolio.getCurrentMoney();
+        Double currentMoney = portfolio.getCurrentMoney();
         portfolio.closePosition(visa);
-        double expectedPosition = 0.0;
-        double actualPosition = portfolio.getCurrentPosition(visa);
-        double expectedCurrentMoney = currentMoney + visaPositionValue;
-        double actualCurrentMoney = portfolio.getCurrentMoney();
+        Double expectedPosition = 0.0;
+        Double actualPosition = portfolio.getCurrentPosition(visa);
+        Double expectedCurrentMoney = currentMoney + visaPositionValue;
+        Double actualCurrentMoney = portfolio.getCurrentMoney();
 
         assertEquals(expectedPosition, actualPosition, Util.DELTA);
         assertEquals(expectedCurrentMoney, actualCurrentMoney, Util.DELTA);
@@ -167,23 +167,23 @@ public class PortfolioTest {
 
     @Test
     public void testGetTotalEquity() throws Exception {
-        double position = 3.0;
-        double firstDayPrice = 105.46;
-        double firstDayEquityValue = position * firstDayPrice;
-        double secondDayPrice = 106.88;
-        double secondDayEquityValue = position * secondDayPrice;
-        double expectedTotalEquity = initialMoney + (secondDayEquityValue - firstDayEquityValue);
+        Double position = 3.0;
+        Double firstDayPrice = 105.46;
+        Double firstDayEquityValue = position * firstDayPrice;
+        Double secondDayPrice = 106.88;
+        Double secondDayEquityValue = position * secondDayPrice;
+        Double expectedTotalEquity = initialMoney + (secondDayEquityValue - firstDayEquityValue);
         portfolio.enterLongPosition(facebook, position);
         portfolio.advanceToNextTradingDate();
-        double actualTotalEquity = portfolio.getTotalEquity();
+        Double actualTotalEquity = portfolio.getTotalEquity();
 
         assertEquals(expectedTotalEquity, actualTotalEquity, Util.DELTA);
     }
 
     @Test
     public void testGetCurrentMoney() throws Exception {
-        double expectedCurrentMoney = initialMoney;
-        double actualCurrentMoney = portfolio.getCurrentMoney();
+        Double expectedCurrentMoney = initialMoney;
+        Double actualCurrentMoney = portfolio.getCurrentMoney();
         assertEquals(expectedCurrentMoney, actualCurrentMoney, Util.DELTA);
     }
 
@@ -192,7 +192,7 @@ public class PortfolioTest {
         boolean actualIsLongPositionOpen = portfolio.isLongPositionOpen(facebook);
         assertFalse(actualIsLongPositionOpen);
 
-        double position = 0.000002;
+        Double position = 0.000002;
         portfolio.enterLongPosition(facebook, position);
         actualIsLongPositionOpen = portfolio.isLongPositionOpen(facebook);
         assertTrue(actualIsLongPositionOpen);
@@ -208,7 +208,7 @@ public class PortfolioTest {
         boolean actualIsShortPositionOpen = portfolio.isShortPositionOpen(facebook);
         assertFalse(actualIsShortPositionOpen);
 
-        double position = 0.000002;
+        Double position = 0.000002;
         portfolio.enterShortPosition(facebook, position);
         actualIsShortPositionOpen = portfolio.isShortPositionOpen(facebook);
         assertTrue(actualIsShortPositionOpen);
@@ -227,9 +227,9 @@ public class PortfolioTest {
 
     @Test
     public void testGetCurrentPosition() throws Exception {
-        double expectedPosition = 3;
+        Double expectedPosition = 3;
         portfolio.enterLongPosition(facebook, expectedPosition);
-        double actualPosition = portfolio.getCurrentPosition(facebook);
+        Double actualPosition = portfolio.getCurrentPosition(facebook);
         assertEquals(expectedPosition, actualPosition, Util.DELTA);
 
         expectedPosition = 0.0;

@@ -10,13 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by ema on 21/02/16.
+ * Created by ema on 07/03/16.
  */
+public class Futures extends Asset {
+    public static String DATASET_NAME = "CME";
 
-public class Equity extends Asset {
-    public static String DATASET_NAME = "wiki";
-
-    public Equity(String fullName, String ticker) {
+    public Futures(String fullName, String ticker) {
         super(fullName, ticker, DATASET_NAME);
     }
 
@@ -26,11 +25,11 @@ public class Equity extends Asset {
         Map<LocalDate, DailyTradingValues> historicalData = new HashMap<>();
 
         for (List<Object> dailyData : Lists.reverse(dataContainer)) {
-            Double closingPrice = getDailyValue(dataset, dailyData, "Adj. Close");
-            Double openingPrice = getDailyValue(dataset, dailyData, "Adj. Open");
-            Double highPrice = getDailyValue(dataset, dailyData, "Adj. High");
-            Double lowPrice = getDailyValue(dataset, dailyData, "Adj. Low");
-            long volume = ((Double) getDailyValue(dataset, dailyData, "Adj. Volume")).longValue();
+            Double closingPrice = getDailyValue(dataset, dailyData, "Last");
+            Double openingPrice = getDailyValue(dataset, dailyData, "Open");
+            Double highPrice = getDailyValue(dataset, dailyData, "High");
+            Double lowPrice = getDailyValue(dataset, dailyData, "Low");
+            long volume = ((Double) getDailyValue(dataset, dailyData, "Volume")).longValue();
 
             String dateString = getDailyValue(dataset, dailyData, "Date");
             LocalDate date = Util.computeDate(dateString);
@@ -43,5 +42,4 @@ public class Equity extends Asset {
 
         return historicalData;
     }
-
 }

@@ -1,5 +1,7 @@
 
+import portfolio.AssetInterface;
 import portfolio.Equity;
+import portfolio.Futures;
 import portfolio.NotEnoughDataException;
 import simulation.Simulation;
 import strategy.SimpleMovingAverageCross;
@@ -15,6 +17,7 @@ import java.util.List;
  */
 public class Main {
     public static void main(String[] args) throws NotEnoughDataException {
+        AssetInterface oil = new Futures("Oil", "CLF2013");
         List<Equity> equities = new ArrayList<>();
         Equity apple = new Equity("Facebook", "AXP");
         equities.add(apple);
@@ -25,7 +28,7 @@ public class Main {
 
         Strategy strategy = new SimpleMovingAverageCross(20, 50);
 
-        Simulation simulation = new Simulation(equities, strategy, 100, startDate, endDate);
+        Simulation simulation = new Simulation(equities, strategy, 100D, startDate, endDate);
 
         System.out.println(simulation.run());
 

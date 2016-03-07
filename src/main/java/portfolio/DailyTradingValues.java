@@ -4,42 +4,42 @@ package portfolio;
  * Created by ema on 23/02/16.
  */
 public class DailyTradingValues {
-    private final double adjustedClosingPrice;
-    private final double adjustedOpeningPrice;
-    private final double adjustedHighPrice;
-    private final double adjustedLowPrice;
-    private final long adjustedVolume;
+    private final Double closingPrice;
+    private final Double openingPrice;
+    private final Double highPrice;
+    private final Double lowPrice;
+    private final long volume;
 
 
-    public DailyTradingValues(double adjustedClosingPrice, double adjustedOpeningPrice,
-                              double adjustedHighPrice, double adjustedLowPrice,
-                              long adjustedVolume) {
+    public DailyTradingValues(Double closingPrice, Double openingPrice,
+                              Double highPrice, Double lowPrice,
+                              long volume) {
 
-        this.adjustedClosingPrice = adjustedClosingPrice;
-        this.adjustedOpeningPrice = adjustedOpeningPrice;
-        this.adjustedHighPrice = adjustedHighPrice;
-        this.adjustedLowPrice = adjustedLowPrice;
-        this.adjustedVolume = adjustedVolume;
+        this.closingPrice = closingPrice;
+        this.openingPrice = openingPrice;
+        this.highPrice = highPrice;
+        this.lowPrice = lowPrice;
+        this.volume = volume;
     }
 
-    public double getAdjustedClosingPrice() {
-        return adjustedClosingPrice;
+    public Double getClosingPrice() {
+        return closingPrice;
     }
 
-    public double getAdjustedOpeningPrice() {
-        return adjustedOpeningPrice;
+    public Double getOpeningPrice() {
+        return openingPrice;
     }
 
-    public double getAdjustedHighPrice() {
-        return adjustedHighPrice;
+    public Double getHighPrice() {
+        return highPrice;
     }
 
-    public double getAdjustedLowPrice() {
-        return adjustedLowPrice;
+    public Double getLowPrice() {
+        return lowPrice;
     }
 
-    public long getAdjustedVolume() {
-        return adjustedVolume;
+    public long getVolume() {
+        return volume;
     }
 
 }

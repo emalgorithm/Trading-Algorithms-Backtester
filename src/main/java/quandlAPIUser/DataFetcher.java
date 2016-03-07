@@ -12,9 +12,9 @@ import java.net.URL;
  */
 public class DataFetcher {
 
-    private static String getJsonData(String ticker) {
+    private static String getJsonData(String ticker, String datasetName) {
         String contents = new String();
-        String url = "https://www.quandl.com/api/v3/datasets/WIKI/" + ticker + "" +
+        String url = "https://www.quandl.com/api/v3/datasets/" + datasetName + "/" + ticker + "" +
                 ".json?auth_token=" + Profile.getAuthToken();
 
         try {
@@ -36,8 +36,8 @@ public class DataFetcher {
         return contents;
     }
 
-    public static Dataset getDataset(String ticker) {
-        String jsonString = getJsonData(ticker);
+    public static Dataset getDataset(String ticker, String datasetName) {
+        String jsonString = getJsonData(ticker, datasetName);
 
         JsonWrapper jsonWrapper = new Gson().fromJson(jsonString, JsonWrapper.class);
 

@@ -13,11 +13,11 @@ import java.util.Set;
  */
 public class Portfolio {
     private final Map<Equity, Double> positions;
-    private double currentMoney;
+    private Double currentMoney;
     private LocalDate currentDate;
 
 
-    public Portfolio(List<Equity> portfolioEquities, double currentMoney, LocalDate currentDate) {
+    public Portfolio(List<Equity> portfolioEquities, Double currentMoney, LocalDate currentDate) {
         this.currentMoney = currentMoney;
         this.currentDate = currentDate;
         this.positions = new HashMap<>();
@@ -28,11 +28,11 @@ public class Portfolio {
     }
 
 
-    public void enterLongPosition(Equity equity, double position) throws
+    public void enterLongPosition(Equity equity, Double position) throws
             NotEnoughMoneyException {
 
-        double price = equity.getClosingPrice(currentDate);
-        double positionCost = position * price;
+        Double price = equity.getClosingPrice(currentDate);
+        Double positionCost = position * price;
 
         if (Util.compare(currentMoney, positionCost) < 0) {
             throw new NotEnoughMoneyException("Not enough money to open this long position, " +
@@ -41,22 +41,21 @@ public class Portfolio {
 
         currentMoney -= positionCost;
 
-        double currentPosition = positions.get(equity);
-        double newPosition = currentPosition + position;
+        Double currentPosition = positions.get(equity);
+        Double newPosition = currentPosition + position;
 
         addPosition(equity, newPosition);
     }
 
 
-    public void enterShortPosition(Equity equity, double position) {
+    public void enterShortPosition(Equity equity, Double position) {
         enterLongPosition(equity, -position);
     }
 
 
-    //Close any kind of position
     public void closePosition(Equity equity) {
-        double price = equity.getClosingPrice(currentDate);
-        double position = positions.get(equity);
+        Double price = equity.getClosingPrice(currentDate);
+        Double position = positions.get(equity);
 
         currentMoney += position * price;
 
@@ -66,20 +65,73 @@ public class Portfolio {
 
 
     public boolean isLongPositionOpen(Equity equity) {
-        double position = getCurrentPosition(equity);
+        Double position = getCurrentPosition(equity);
 
         return Double.compare(position, 0.0) == 1;
     }
 
 
     public boolean isShortPositionOpen(Equity equity) {
-        double position = getCurrentPosition(equity);
+        Double position = getCurrentPosition(equity);
 
         return Double.compare(position, 0.0) == -1;
     }
 
 
-    private LocalDate getNextTradingDate() throws EmptyPortfolioException {
+    public void advanceToNextTradingDate() {
+        currentDate = getNextTradingDate();
+    }
+
+
+    public LocalDate getCurrentDate() {
+        return currentDate;
+    }
+
+
+    public Double getCurrentPosition(Equity equity) {
+        if (!containsEquity(equity)) {
+            return 0.0;
+        }
+
+        return positions.get(equity);
+    }
+
+
+    public boolean containsEquity(Equity equity) {
+        return positions.containsKey(equity);
+    }
+
+
+    public Double getTotalEquity() {
+        Double positionsEquity = 0.0;
+
+        for (Map.Entry<Equity, Double> equityPosition : entrySet()) {
+            Double position = equityPosition.getValue();
+            Double price = equityPosition.getKey().getClosingPrice(currentDate);
+            Double positionEquity = position * price;
+            positionsEquity += positionEquity;
+        }
+
+        return positionsEquity + getCurrentMoney();
+    }
+
+
+    public Set<Map.Entry<Equity, Double>> entrySet() {
+        return positions.entrySet();
+    }
+
+
+    public Double getCurrentMoney() {
+        return currentMoney;
+    }
+
+
+    private void addPosition(Equity equity, Double position) {
+        positions.put(equity, position);
+    }
+
+
+    private LocalDate getNextTradingDate() throws EmptyPortfolioException, NotEnoughDataException {
         if (positions.isEmpty()) {
             throw new EmptyPortfolioException("It is not possible to get the next trading " +
                     "date of an empty portfolio");
@@ -100,56 +152,5 @@ public class Portfolio {
     }
 
 
-    public void advanceToNextTradingDate() {
-        currentDate = getNextTradingDate();
-    }
-
-
-    public LocalDate getCurrentDate() {
-        return currentDate;
-    }
-
-
-    public double getCurrentPosition(Equity equity) {
-        if (!containsEquity(equity)) {
-            return 0.0;
-        }
-
-        return positions.get(equity);
-    }
-
-
-    private void addPosition(Equity equity, double position) {
-        positions.put(equity, position);
-    }
-
-
-    public boolean containsEquity(Equity equity) {
-        return positions.containsKey(equity);
-    }
-
-
-    public double getTotalEquity() {
-        double positionsEquity = 0.0;
-
-        for (Map.Entry<Equity, Double> equityPosition : entrySet()) {
-            double position = equityPosition.getValue();
-            double price = equityPosition.getKey().getClosingPrice(currentDate);
-            double positionEquity = position * price;
-            positionsEquity += positionEquity;
-        }
-
-        return positionsEquity + getCurrentMoney();
-    }
-
-
-    public Set<Map.Entry<Equity, Double>> entrySet() {
-        return positions.entrySet();
-    }
-
-
-    public double getCurrentMoney() {
-        return currentMoney;
-    }
 
 }

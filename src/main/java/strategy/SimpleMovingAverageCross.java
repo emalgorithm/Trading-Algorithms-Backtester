@@ -2,6 +2,7 @@ package strategy;
 
 import portfolio.Equity;
 import portfolio.Portfolio;
+import util.TechnicalAnalysis;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -25,12 +26,12 @@ public class SimpleMovingAverageCross implements Strategy {
 
         for (Map.Entry<Equity, Double> equityPosition : portfolio.entrySet()) {
             Equity equity = equityPosition.getKey();
-            double position = equityPosition.getValue();
-            double currentMoney = portfolio.getCurrentMoney();
+            Double position = equityPosition.getValue();
+            Double currentMoney = portfolio.getCurrentMoney();
             LocalDate date = portfolio.getCurrentDate();
 
 
-            double adjustedClosingPrice = equity.getClosingPrice(date);
+            Double adjustedClosingPrice = equity.getClosingPrice(date);
             LocalDate previousDate = equity.getPreviousTradingDate(date);
 
             boolean goldenCross = isGoldenCross(equity, date, previousDate);
@@ -41,7 +42,7 @@ public class SimpleMovingAverageCross implements Strategy {
                 portfolio.closePosition(equity);
 
                 //Open new long position
-                double newPositionSize = currentMoney / adjustedClosingPrice;
+                Double newPositionSize = currentMoney / adjustedClosingPrice;
                 portfolio.enterLongPosition(equity, newPositionSize);
 
             } else if (deathCross) {
@@ -49,7 +50,7 @@ public class SimpleMovingAverageCross implements Strategy {
                 portfolio.closePosition(equity);
 
                 //Open new short position
-                double newPositionSize = currentMoney / adjustedClosingPrice;
+                Double newPositionSize = currentMoney / adjustedClosingPrice;
                 portfolio.enterShortPosition(equity, newPositionSize);
             }
         }
@@ -74,14 +75,16 @@ public class SimpleMovingAverageCross implements Strategy {
     private boolean isGoldenOrDeathCross(Equity equity, LocalDate date, LocalDate previousDate,
                                          boolean typeGoldenCross) {
         int shortMovingAvgLength = 20;
-        double previous20MovingAverage = equity.getMovingAverage(previousDate,
+        Double previous20MovingAverage = TechnicalAnalysis.getMovingAverage(equity, previousDate,
                 shortMovingAvgLength);
-        double current20MovingAverage = equity.getMovingAverage(date, shortMovingAvgLength);
+        Double current20MovingAverage = TechnicalAnalysis.getMovingAverage(equity, date,
+                shortMovingAvgLength);
 
         int longMovingAvgLength = 50;
-        double previous50MovingAverage = equity.getMovingAverage(previousDate,
+        Double previous50MovingAverage = TechnicalAnalysis.getMovingAverage(equity, previousDate,
                 longMovingAvgLength);
-        double current50MovingAverage = equity.getMovingAverage(date, longMovingAvgLength);
+        Double current50MovingAverage = TechnicalAnalysis.getMovingAverage(equity, date,
+                longMovingAvgLength);
 
         if (typeGoldenCross) {
             boolean isGoldenCross = previous20MovingAverage < previous50MovingAverage &&
