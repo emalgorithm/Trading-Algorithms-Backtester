@@ -45,7 +45,7 @@ public class TechnicalAnalysis {
             i--;
         }
 
-        Double movingAverage = pricesSum / ((Double) numberOfDays);
+        Double movingAverage = pricesSum / ((Integer) numberOfDays).doubleValue();
 
         return movingAverage;
     }

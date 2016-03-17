@@ -11,13 +11,13 @@ import java.util.Map;
  * Created by ema on 25/02/16.
  */
 public class SimpleMovingAverageCross implements Strategy {
-    private final int shortMovingAverageLength;
-    private final int longMovingAverageLength;
+    private final int shortMovingAvgLength;
+    private final int longMovingAvgLength;
 
 
-    public SimpleMovingAverageCross(int shortMovingAverageLength, int longMovingAverageLength) {
-        this.shortMovingAverageLength = shortMovingAverageLength;
-        this.longMovingAverageLength = longMovingAverageLength;
+    public SimpleMovingAverageCross(int shortMovingAvgLength, int longMovingAvgLength) {
+        this.shortMovingAvgLength = shortMovingAvgLength;
+        this.longMovingAvgLength = longMovingAvgLength;
     }
 
 
@@ -59,14 +59,12 @@ public class SimpleMovingAverageCross implements Strategy {
 
 
     private boolean isGoldenCross(Equity equity, LocalDate date, LocalDate previousDate) {
-        boolean typeGoldenCross = true;
-        return isGoldenOrDeathCross(equity, date, previousDate, typeGoldenCross);
+        return isGoldenOrDeathCross(equity, date, previousDate, true);
     }
 
 
     private boolean isDeathCross(Equity equity, LocalDate date, LocalDate previousDate) {
-        boolean typeGoldenCross = false;
-        return isGoldenOrDeathCross(equity, date, previousDate, typeGoldenCross);
+        return isGoldenOrDeathCross(equity, date, previousDate, false);
     }
 
 
@@ -74,13 +72,11 @@ public class SimpleMovingAverageCross implements Strategy {
     //returns whether it is a death cross
     private boolean isGoldenOrDeathCross(Equity equity, LocalDate date, LocalDate previousDate,
                                          boolean typeGoldenCross) {
-        int shortMovingAvgLength = 20;
         Double previous20MovingAverage = TechnicalAnalysis.getMovingAverage(equity, previousDate,
                 shortMovingAvgLength);
         Double current20MovingAverage = TechnicalAnalysis.getMovingAverage(equity, date,
                 shortMovingAvgLength);
 
-        int longMovingAvgLength = 50;
         Double previous50MovingAverage = TechnicalAnalysis.getMovingAverage(equity, previousDate,
                 longMovingAvgLength);
         Double current50MovingAverage = TechnicalAnalysis.getMovingAverage(equity, date,

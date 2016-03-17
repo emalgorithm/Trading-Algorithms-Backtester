@@ -24,7 +24,7 @@ public class PortfolioTest {
         visa = new Equity("Visa", "V");
         facebook = new Equity("Facebook", "FB");
         date = Util.computeDate("2016-02-23");
-        initialMoney = 10000;
+        initialMoney = 10000.0;
     }
 
     @AfterClass
@@ -227,7 +227,7 @@ public class PortfolioTest {
 
     @Test
     public void testGetCurrentPosition() throws Exception {
-        Double expectedPosition = 3;
+        Double expectedPosition = 3.0;
         portfolio.enterLongPosition(facebook, expectedPosition);
         Double actualPosition = portfolio.getCurrentPosition(facebook);
         assertEquals(expectedPosition, actualPosition, Util.DELTA);

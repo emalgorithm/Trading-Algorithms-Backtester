@@ -1,7 +1,5 @@
 package util;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -10,24 +8,14 @@ import static org.junit.Assert.*;
  * Created by ema on 07/03/16.
  */
 public class UtilTest {
-    //TODO
-    @Before
-    public void setUp() throws Exception {
-
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
-    }
 
     @Test
     public void testComputeDate() throws Exception {
+        String dateString = "1998-05-15";
+        assertEquals(Util.computeDate(dateString).toString(), dateString);
 
+        dateString = "1678-09-28";
+        assertEquals(Util.computeDate(dateString).toString(), dateString);
     }
 
-    @Test
-    public void testCompare() throws Exception {
-
-    }
 }

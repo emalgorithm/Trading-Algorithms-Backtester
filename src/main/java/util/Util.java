@@ -28,17 +28,4 @@ public final class Util {
         return date;
     }
 
-
-    public static int compare(Double first, Double second) {
-        if (first + DELTA < second) {
-            return -1;
-        }
-
-        if (second + DELTA < first) {
-            return 1;
-        }
-
-        return 0;
-    }
-
 }

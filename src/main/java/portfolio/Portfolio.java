@@ -34,7 +34,7 @@ public class Portfolio {
         Double price = equity.getClosingPrice(currentDate);
         Double positionCost = position * price;
 
-        if (Util.compare(currentMoney, positionCost) < 0) {
+        if (currentMoney.compareTo(positionCost) < 0) {
             throw new NotEnoughMoneyException("Not enough money to open this long position, " +
                     "money required: " + positionCost + ", actual money: " + currentMoney);
         }
