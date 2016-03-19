@@ -15,7 +15,7 @@ public class DataFetcher {
     private static String getJsonData(String ticker, String datasetName) {
         String contents = new String();
         String url = "https://www.quandl.com/api/v3/datasets/" + datasetName + "/" + ticker + "" +
-                ".json?auth_token=" + Profile.getAuthToken();
+                ".json?auth_token=" + Profile.AUTH_TOKEN;
 
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();

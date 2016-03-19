@@ -1,5 +1,6 @@
 package util;
 
+import portfolio.Asset;
 import portfolio.AssetInterface;
 import portfolio.Equity;
 import portfolio.NotEnoughDataException;
@@ -49,4 +50,28 @@ public class TechnicalAnalysis {
 
         return movingAverage;
     }
+
+    /**
+     * Return the average spread between two assets given by the two tickers in the period between
+     * startDate and endDate, in percentage.
+     * @param firstTicker
+     * @param secondTicker
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+//    public static Double getAverageSpread(String firstTicker, String secondTicker, LocalDate
+//            startDate, LocalDate endDate) {
+//
+//        AssetInterface firstAsset = Asset.createAsset(firstTicker);
+//        AssetInterface secondAsset = Asset.createAsset(secondTicker);
+//
+//        return getAverageSpread(firstAsset, secondAsset, startDate, endDate);
+//
+//    }
+//
+//    public static Double getAverageSpread(AssetInterface firstAsset, AssetInterface secondAsset,
+//                                          LocalDate startDate, LocalDate endDate) {
+//      //TODO
+//    }
 }

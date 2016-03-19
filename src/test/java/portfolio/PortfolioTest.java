@@ -52,7 +52,7 @@ public class PortfolioTest {
         Double positionValue = initialMoney * 0.3;                 // 30% of initialMoney
         Double expectedPosition = positionValue / visa.getClosingPrice(date);
         portfolio.enterLongPosition(visa, expectedPosition);
-        Double actualPosition = portfolio.getCurrentPosition(visa);
+        Integer actualPosition = portfolio.getCurrentPosition(visa);
         Double expectedNewCurrentMoney = currentMoney - positionValue;
         Double actualNewCurrentMoney = portfolio.getCurrentMoney();
         currentMoney = actualNewCurrentMoney;
@@ -95,7 +95,7 @@ public class PortfolioTest {
         Double position = positionValue / visa.getClosingPrice(date);
         Double expectedPosition = -position;
         portfolio.enterShortPosition(visa, position);
-        Double actualPosition = portfolio.getCurrentPosition(visa);
+        Integer actualPosition = portfolio.getCurrentPosition(visa);
         Double expectedNewCurrentMoney = currentMoney + positionValue;
         Double actualNewCurrentMoney = portfolio.getCurrentMoney();
         currentMoney = actualNewCurrentMoney;
@@ -145,7 +145,7 @@ public class PortfolioTest {
         Double currentMoney = portfolio.getCurrentMoney();
         portfolio.closePosition(visa);
         Double expectedPosition = 0.0;
-        Double actualPosition = portfolio.getCurrentPosition(visa);
+        Integer actualPosition = portfolio.getCurrentPosition(visa);
         Double expectedCurrentMoney = currentMoney + visaPositionValue;
         Double actualCurrentMoney = portfolio.getCurrentMoney();
 
@@ -229,7 +229,7 @@ public class PortfolioTest {
     public void testGetCurrentPosition() throws Exception {
         Double expectedPosition = 3.0;
         portfolio.enterLongPosition(facebook, expectedPosition);
-        Double actualPosition = portfolio.getCurrentPosition(facebook);
+        Integer actualPosition = portfolio.getCurrentPosition(facebook);
         assertEquals(expectedPosition, actualPosition, Util.DELTA);
 
         expectedPosition = 0.0;

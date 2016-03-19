@@ -1,8 +1,5 @@
 
-import portfolio.AssetInterface;
-import portfolio.Equity;
-import portfolio.Futures;
-import portfolio.NotEnoughDataException;
+import portfolio.*;
 import simulation.Simulation;
 import strategy.SimpleMovingAverageCross;
 import strategy.Strategy;
@@ -17,20 +14,21 @@ import java.util.List;
  */
 public class Main {
     public static void main(String[] args) throws NotEnoughDataException {
-        AssetInterface oil = new Futures("Oil", "CLF2013");
-        List<Equity> equities = new ArrayList<>();
-        Equity apple = new Equity("Facebook", "AXP");
-        equities.add(apple);
-
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate startDate = LocalDate.parse("2010-02-22", dateFormat);
-        LocalDate endDate = LocalDate.parse("2016-02-22", dateFormat);
-
-        Strategy strategy = new SimpleMovingAverageCross(20, 50);
-
-        Simulation simulation = new Simulation(equities, strategy, 100D, startDate, endDate);
-
-        System.out.println(simulation.run());
+          AssetInterface fb = Asset.createAsset("FB");
+//        AssetInterface oil = new Futures("Oil", "CLF2013");
+//        List<Equity> equities = new ArrayList<>();
+//        Equity apple = new Equity("Facebook", "AXP");
+//        equities.add(apple);
+//
+//        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDate startDate = LocalDate.parse("2010-02-22", dateFormat);
+//        LocalDate endDate = LocalDate.parse("2016-02-22", dateFormat);
+//
+//        Strategy strategy = new SimpleMovingAverageCross(20, 50);
+//
+//        Simulation simulation = new Simulation(equities, strategy, 100D, startDate, endDate);
+//
+//        System.out.println(simulation.run());
 
     }
 

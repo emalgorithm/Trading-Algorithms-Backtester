@@ -24,9 +24,9 @@ public class SimpleMovingAverageCross implements Strategy {
     @Override
     public void run(Portfolio portfolio) {
 
-        for (Map.Entry<Equity, Double> equityPosition : portfolio.entrySet()) {
+        for (Map.Entry<Equity, Integer> equityPosition : portfolio.entrySet()) {
             Equity equity = equityPosition.getKey();
-            Double position = equityPosition.getValue();
+            int position = equityPosition.getValue();
             Double currentMoney = portfolio.getCurrentMoney();
             LocalDate date = portfolio.getCurrentDate();
 
@@ -42,7 +42,7 @@ public class SimpleMovingAverageCross implements Strategy {
                 portfolio.closePosition(equity);
 
                 //Open new long position
-                Double newPositionSize = currentMoney / adjustedClosingPrice;
+                int newPositionSize = ((Double)(currentMoney / adjustedClosingPrice)).intValue();
                 portfolio.enterLongPosition(equity, newPositionSize);
 
             } else if (deathCross) {
@@ -50,7 +50,7 @@ public class SimpleMovingAverageCross implements Strategy {
                 portfolio.closePosition(equity);
 
                 //Open new short position
-                Double newPositionSize = currentMoney / adjustedClosingPrice;
+                int newPositionSize = ((Double)(currentMoney / adjustedClosingPrice)).intValue();
                 portfolio.enterShortPosition(equity, newPositionSize);
             }
         }
