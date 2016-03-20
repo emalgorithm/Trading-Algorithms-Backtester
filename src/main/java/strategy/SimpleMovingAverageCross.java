@@ -1,5 +1,7 @@
 package strategy;
 
+import market.DailyMarketEvent;
+import portfolio.DailyTradingValues;
 import portfolio.Equity;
 import portfolio.Portfolio;
 import util.TechnicalAnalysis;
@@ -22,39 +24,39 @@ public class SimpleMovingAverageCross implements Strategy {
 
 
     @Override
-    public void run(Portfolio portfolio) {
-
-        for (Map.Entry<Equity, Integer> equityPosition : portfolio.entrySet()) {
-            Equity equity = equityPosition.getKey();
-            int position = equityPosition.getValue();
-            Double currentMoney = portfolio.getCurrentMoney();
-            LocalDate date = portfolio.getCurrentDate();
-
-
-            Double adjustedClosingPrice = equity.getClosingPrice(date);
-            LocalDate previousDate = equity.getPreviousTradingDate(date);
-
-            boolean goldenCross = isGoldenCross(equity, date, previousDate);
-            boolean deathCross = isDeathCross(equity, date, previousDate);
-
-            if (goldenCross) {
-                //Close short position if it was open
-                portfolio.closePosition(equity);
-
-                //Open new long position
-                int newPositionSize = ((Double)(currentMoney / adjustedClosingPrice)).intValue();
-                portfolio.enterLongPosition(equity, newPositionSize);
-
-            } else if (deathCross) {
-                //Close long position if it was open
-                portfolio.closePosition(equity);
-
-                //Open new short position
-                int newPositionSize = ((Double)(currentMoney / adjustedClosingPrice)).intValue();
-                portfolio.enterShortPosition(equity, newPositionSize);
-            }
-        }
-
+    public void dailyMarketEventOccurred(DailyMarketEvent dailyMarketEvent) {
+//        DailyTradingValues dailyMarketData = dailyMarketEvent.getDailyMarketData();
+//
+//        for (Map.Entry<Equity, Integer> equityPosition : portfolio.entrySet()) {
+//            Equity equity = equityPosition.getKey();
+//            int position = equityPosition.getValue();
+//            Double currentMoney = portfolio.getCurrentMoney();
+//            LocalDate date = portfolio.getCurrentDate();
+//
+//
+//            Double adjustedClosingPrice = equity.getClosingPrice(date);
+//            LocalDate previousDate = equity.getPreviousTradingDate(date);
+//
+//            boolean goldenCross = isGoldenCross(equity, date, previousDate);
+//            boolean deathCross = isDeathCross(equity, date, previousDate);
+//
+//            if (goldenCross) {
+//                //Close short position if it was open
+//                portfolio.closePosition(equity);
+//
+//                //Open new long position
+//                int newPositionSize = ((Double)(currentMoney / adjustedClosingPrice)).intValue();
+//                portfolio.enterLongPosition(equity, newPositionSize);
+//
+//            } else if (deathCross) {
+//                //Close long position if it was open
+//                portfolio.closePosition(equity);
+//
+//                //Open new short position
+//                int newPositionSize = ((Double)(currentMoney / adjustedClosingPrice)).intValue();
+//                portfolio.enterShortPosition(equity, newPositionSize);
+//            }
+//        }
     }
 
 

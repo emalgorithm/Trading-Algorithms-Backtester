@@ -6,6 +6,8 @@ import java.time.LocalDate;
  * Created by ema on 06/03/16.
  */
 public interface AssetInterface {
+    DailyTradingValues getDailyTradingValues(LocalDate date);
+
     Double getClosingPrice(LocalDate date);
 
     LocalDate getPreviousTradingDate(LocalDate date);

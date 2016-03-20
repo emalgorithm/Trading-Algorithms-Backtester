@@ -29,11 +29,11 @@ public class Simulation {
 
     public Double run() {
 
-        while (portfolio.getCurrentDate().compareTo(endDate) <= 0) {
-            strategy.run(portfolio);
-
-            portfolio.advanceToNextTradingDate();
-        }
+//        while (portfolio.getCurrentDate().compareTo(endDate) <= 0) {
+//            strategy.run(portfolio);
+//
+//            portfolio.advanceToNextTradingDate();
+//        }
 
         return portfolio.getTotalEquity();
     }

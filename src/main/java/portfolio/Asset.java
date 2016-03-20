@@ -46,6 +46,12 @@ public abstract class Asset implements AssetInterface{
 
 
     @Override
+    public DailyTradingValues getDailyTradingValues(LocalDate date) {
+        return historicalData.get(date);
+    }
+
+
+    @Override
     public Double getClosingPrice(LocalDate date) throws NotEnoughDataException {
         if (date.compareTo(startDate) < 0) {
             throw new NotEnoughDataException("The date requested is before the first day recorded");

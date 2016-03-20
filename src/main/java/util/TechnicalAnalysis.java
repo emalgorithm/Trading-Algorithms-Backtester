@@ -53,25 +53,53 @@ public class TechnicalAnalysis {
 
     /**
      * Return the average spread between two assets given by the two tickers in the period between
-     * startDate and endDate, in percentage.
+     * startDate and endDate, in percentage w.r.t the first asset.
      * @param firstTicker
      * @param secondTicker
      * @param startDate
      * @param endDate
      * @return
      */
-//    public static Double getAverageSpread(String firstTicker, String secondTicker, LocalDate
-//            startDate, LocalDate endDate) {
-//
-//        AssetInterface firstAsset = Asset.createAsset(firstTicker);
-//        AssetInterface secondAsset = Asset.createAsset(secondTicker);
-//
-//        return getAverageSpread(firstAsset, secondAsset, startDate, endDate);
-//
-//    }
-//
-//    public static Double getAverageSpread(AssetInterface firstAsset, AssetInterface secondAsset,
-//                                          LocalDate startDate, LocalDate endDate) {
-//      //TODO
-//    }
+    public static Double getAverageSpread(String firstTicker, String secondTicker, LocalDate
+            startDate, LocalDate endDate) {
+
+        AssetInterface firstAsset = Asset.createAsset(firstTicker);
+        AssetInterface secondAsset = Asset.createAsset(secondTicker);
+
+        return getAverageSpread(firstAsset, secondAsset, startDate, endDate);
+
+    }
+
+    /**
+     * Return the average spread between two given assets in the period between
+     * startDate and endDate, in percentage w.r.t the first asset.
+     * @param firstAsset
+     * @param secondAsset
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public static Double getAverageSpread(AssetInterface firstAsset, AssetInterface secondAsset,
+                                          LocalDate startDate, LocalDate endDate) {
+        LocalDate date = startDate;
+        Double spreadSum = 0.0;
+        int numOfDays = 0;
+
+
+        while (date.compareTo(endDate) < 1) {
+            spreadSum += getSpread(date, firstAsset, secondAsset);
+            numOfDays++;
+            date.plusDays(1);
+        }
+
+        return spreadSum / numOfDays;
+    }
+
+    private static Double getSpread(LocalDate date, AssetInterface firstAsset,
+                                    AssetInterface secondAsset) {
+        Double firstPrice = firstAsset.getClosingPrice(date);
+        Double secondPrice = secondAsset.getClosingPrice(date);
+
+        return Math.abs((firstPrice - secondPrice) / firstPrice);
+    }
 }
